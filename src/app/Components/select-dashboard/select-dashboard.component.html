@@ -1,0 +1,25 @@
+<app-header></app-header>
+<div class="dropdown" style="margin-top:170px;;">
+ 
+<h4 style=" font-weight: 700;font-size: 32px; margin-bottom: 30px;">Select Dashboard</h4>
+    
+
+    <div class="choose-insurance-box-type-area">
+      <div class="choose-insurance-radio-box radio-toolbar" style="display: flex;"  >
+        <ng-container *ngFor="let item of dashboardList" >
+        <input type="checkbox" [id]="item"  [value]="item" style="visibility: hidden;"  >
+        <label [for]="item" style="    width: 173px;" >
+          <div class="choose-insurance-box" (click)="navigateTo(item)" style="display: flex; cursor: pointer;">
+            <div class="choose-insurance-img"  >
+              <img src="assets/images/{{item}}.png" *ngIf="item!=showCondition" class="inusrance-icon"> <img  src="assets/images/{{item}}_1.png" *ngIf="item==showCondition" class="inusrance-icon" >
+            </div>
+            
+          </div>
+        </label>
+ </ng-container>
+      </div>
+    </div> 
+
+
+</div>
+  <app-footer></app-footer>

@@ -1,0 +1,417 @@
+<div *ngIf="loaderService && loaderService.showLoader" id="showloading" [class.show]="loaderService.showLoader">
+</div>
+
+<main class="inner-container side-container" style="font-family: 'Raleway-Medium'">
+<div class="inner-container-top-row" *ngIf="!MessageBox && !addPatient && !addFamily">
+    <div class="inner-container-left">
+      <div class="inner-container-heading">
+        <h1>List of Patients</h1>
+      </div>
+      <span class="box">&nbsp;</span>
+      <div class="myBtnContainer_list">
+        <div class="today_patient_heading" style="cursor: context-menu;">
+          <span>Today:</span>
+
+        </div>
+        <div class="today_patient_list">
+          <button class="btnr_left_patient" style="cursor: context-menu;" ><img src="assets/images/patient-icon.png"> <span class="inner-container-list-numbers"> {{todayPatientCount}} </span></button>
+            
+      <button class="btnr_right_message as" style="cursor: context-menu;"><img src="assets/images/message-icon.png"><span class="inner-container-list-numbers"> {{todayMessageCount}}</span></button>
+        </div>
+   
+        <!-- <div class="fortegra-search-table-row"> -->
+      </div>
+      <div class="myBtnContainer_list_2">
+        <div class="today_patient_heading" style="cursor: context-menu;">
+          <span>Till Date:</span>
+
+        </div>
+        <div class="today_patient_list">
+          <button class="btnr_left_patient" style="cursor: context-menu;" ><img src="assets/images/patient-icon.png" > <span class="inner-container-list-numbers" style="cursor: context-menu;"> {{totalPatientCount}} </span></button>
+            
+      <button class="btnr_right_message as" style="cursor: context-menu;"><img src="assets/images/message-icon.png"><span class="inner-container-list-numbers"> {{totalMessageCount}}</span></button>
+        </div>
+   
+        <!-- <div class="fortegra-search-table-row"> -->
+      </div>
+    </div>
+    <!-- <div class="inner-container-list-numbers">8</div> -->
+    <div class="inner-container-right">
+
+        <div class="search-filter-area">
+          <div class="search-box"><input type="search" class="form-control themeInput" [(ngModel)]="serchText" placeholder="Search"
+            (keyup.enter)="searchPatientOnEnter($event)" (textChange)="searchPatient($event)" (search)="searchPatientBlank($event)"
+            (keyup)="searchPatient($event)"  maxlength="50"><span class="search-icon" (click)="searchPatientOnClik()"><img src="assets/images/Search-blue.png" alt=""></span></div>
+        </div>
+
+      <div class="add-user-btn" *ngIf="dashboardType !='OR'"  (click)="OpenAddPatientModal('')"><button style="cursor: pointer;padding: 8px 20px;color: black;" class="btn btn-primary blue-bg"><span ><img src="assets/images/plus-icon.png" alt=""></span>
+          Add Patient</button>  </div>&nbsp;
+      <!-- <div class="filter-buton"><a href="#"><span><img src="assets/images/filter.png" alt=""></span></a></div> -->
+      <div class="myBtnContainer">
+        <button class="btnr_left" (click)="designView ='list'"><img src="assets/images/list-view.png"></button>
+        <button class="btnr_right as"(click)="designView ='grid'"><i class="fa fa-th-large"><img src="assets/images/grid-view.png"></i></button>
+        <!-- <div class="fortegra-search-table-row"> -->
+            
+      </div>
+      <!-- <div class="export-excel-btn"><a href="#"><span><img src="assets/images/plus-icon.png" alt=""></span>Export Excel</a></div> -->
+    </div>
+    
+  </div>
+</main>
+
+<div *ngIf="!MessageBox && !addPatient && !addFamily" style="font-family: 'Raleway-Medium'">
+<div class="pageGrid" *ngIf="designView  =='list'  ">
+    <div class="gridHeader">
+        <app-datatable [DataSource]="patientList" (ClickAction)="clickAction($event)"
+            (OpenMessageBoxAction)="OpenMessageBox($event)" (DeleteAction)="deleteConfirmation($event)"></app-datatable>
+    </div>
+
+</div>
+<div  *ngIf="designView  =='grid'">
+        <app-datatable-grid [DataSource]="patientList" (ClickAction)="clickAction($event)"
+            (OpenMessageBoxAction)="OpenMessageBox($event)" (DeleteAction)="deleteConfirmation($event)"></app-datatable-grid>
+
+</div>
+<div class="emptyGridData"
+    *ngIf="(!patientListMaster) || (patientListMaster && !patientListMaster.data) || (patientListMaster && patientList.data && patientListMaster.data.length == 0)">
+    <p>{{isSearched?'No result found': 'No Patient has been added'}}</p>
+    <div class="add-user-btn" *ngIf="dashboardType !='OR'"  (click)="OpenAddPatientModal('')"><a style="cursor: pointer;" class="blue-bg"><span ><img src="assets/images/plus-icon.png" alt=""></span>
+      Add Patient</a>  </div>
+</div>
+</div>
+
+
+<!-- Add message model start -->
+<div  *ngIf="MessageBox" style="font-family: 'Raleway-Medium'">
+     <div class="inner-container-top-row">
+        <div class="inner-container-left">
+          <div class="inner-container-heading">
+            <h1>New Message </h1>
+          </div>
+  
+        </div>
+  
+        <div class="inner-container-right">
+  
+          <div class="add-user-btn" style="cursor: pointer;"><a (click)="resetMessage()" class="blue-bg"><span><img src="assets/images/Back-icon.png" alt=""></span>
+              Back</a></div>
+  
+        </div>
+      </div> 
+    <div class="row row-cols-4 row-cols-md-4 g-4 fortegra-inner-area "style="
+    margin-top: 28px;">
+        <div class="col">
+          <div class="card">
+            <div class="card-body" style="padding-bottom: 0; padding-right: 0;">
+  
+              <div class="card-row-2">
+                <h5 class="card-title">{{patientData.patientName| titlecase}}</h5>
+  
+              </div>
+              <div class="card-row-3">
+                <div style="line-height: 1.3;">
+                  <div>
+                    <img src="assets/images/calender-icon.png" class="appoint-img" alt="...">
+                    <span class="appoint-text" *ngIf="dashboardType !='ED' && dashboardType !='OR'">Appointment Date:</span>
+                    <span class="appoint-text" *ngIf="dashboardType =='ED' || dashboardType =='OR'">Entry Date:</span>
+                  </div>
+                  <!-- <h6 class="card-title">Doe, Jothn</h6> -->
+                 
+                  <span class="checkin-time date-container">  {{patientData.appointmentDate | date}}  </span>
+                </div>
+              </div>
+              <div *ngIf="dashboardType.toLowerCase() != 'or'">
+              <hr class="divider">
+              <div class="card-row-3">
+                <div style="line-height: 1.3;">
+                  <div>
+                    <img src="assets/images/check-in-icon.png" class="appoint-img" alt="...">
+                    <span class="appoint-text">Appointment Time:</span>
+                  </div>
+                    <span class="checkin-time date-container">{{patientData.appointmentDate | date:'h:mm a'}} </span>
+                </div>
+  
+              </div>
+            </div>
+              <hr class="divider">
+  
+              <div class="card-row-3">
+                <div style="line-height: 1.3;">
+                  <div>
+                    <img src="assets/images/check-in-icon.png" class="appoint-img" alt="...">
+                    <span class="appoint-text" *ngIf="dashboardType !='ED' && dashboardType !='OR'">Check-in Time:</span>
+                    <span class="appoint-text" *ngIf="dashboardType =='ED' || dashboardType =='OR'">Entry Time:</span>
+                  </div>
+                  <span class="checkin-time date-container">{{patientData.checkInTime | date:'h:mm a'}} </span>
+                </div>
+  
+              </div>
+              <hr class="divider">
+  
+              <div class="card-row-3">
+                <div style="line-height: 1.3;">
+                  <div>
+                    <img src="assets/images/contact-icon.png" class="appoint-img" alt="...">
+                    <span class="appoint-text">Cell Number:</span>
+                  </div>
+                  <span class="checkin-time date-container">{{patientData.contactNumber | PhoneUSA}}</span>
+                </div>
+                <div>
+                </div>
+              </div>
+              <hr class="divider">
+              <div class="card-row-3">
+                <div style="line-height: 1.3;">
+                  <div>
+                    <img src="assets/images/practitioner-icon.png" class="appoint-img" alt="..." style="opacity:0.7 ;">
+                    <span class="appoint-text">Practitioner:</span>
+                  </div>
+                  <span class="checkin-time date-container">{{patientData.provider| titlecase}}</span>
+                </div>
+                <div>
+                </div>
+              </div>
+           
+              <ng-container *ngIf="dashboardType.toLowerCase() != 'amb' && dashboardType.toLowerCase() != 'amballscript'" >
+                <hr class="divider">
+              <div class="card-row-3" style="height: 41.64px;">
+                <div style="line-height: 1.3;">
+                  <div>
+                    <img src="assets/images/family-icon.png" class="appoint-img" alt="...">
+                    <span class="appoint-text">Family Member Name:</span>
+                  </div>
+                  <span class="checkin-time date-container" *ngIf="(patientData.familyMemberLastName !='' &&  patientData.familyMemberFirstName!='' )"> {{patientData.familyMemberLastName| titlecase}}, {{patientData.familyMemberFirstName| titlecase}} </span>
+                  <span class="checkin-time date-container" *ngIf="(patientData.familyMemberLastName =='' &&  patientData.familyMemberFirstName!='' )">  {{patientData.familyMemberFirstName| titlecase}} </span>
+                </div>
+              </div>
+               <hr class="divider">
+              <div class="card-row-3">
+               <div style="line-height: 1.3;">
+                  <div>
+                    <img src="assets/images/contact-icon.png" class="appoint-img" alt="...">
+                    <span class="appoint-text">Family Member’s Cell:</span>
+                  </div>
+                  <span class="checkin-time date-container">{{patientData.familyMemberContactNumber| PhoneUSA}}  </span>
+                </div>
+              </div>
+               
+              </ng-container>
+              <!-- <hr class="divider"> -->
+            </div>
+  
+          </div>
+        </div>
+        <div class="col message-contianer">
+          <div class="card">
+            <div>
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                <li class="nav-item" role="presentation">
+                  <button [ngClass]="
+                    toggleMessage === 'messagehistory' ? 'nav-link ':'nav-link active'"   type="button" (click)="toggleMessage ='message'" >
+                    New Message</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button  [ngClass]="
+                  toggleMessage === 'message' ? 'nav-link ':'nav-link active'"   type="button"(click)="patientHistory(patientData,0)" >Message History</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="pills-tabContent">
+                <div *ngIf="toggleMessage=='message'" class="tab-pane fade active show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                  <div class="sent-to-box" *ngIf="dashboardType.toLowerCase() == 'ed' || dashboardType.toLowerCase() == 'or' ">
+                    <ng-container *ngIf="dashboardType.toLowerCase() == 'ed' || dashboardType.toLowerCase() == 'or' ">
+                     <label for="sent-to-box" class="form-label">Send to</label>
+                    <div class="form-check form-check-inline" (click)="getMessageTempListByType('patient',patientData.contactNumber,'')" >
+                      <input type="radio" class="form-check-input"  [ngStyle]="{opacity:patientData.contactNumber?1:0.7}"
+                      [disabled]="!patientData.contactNumber" id="family" name="sentTo" value="patient" [(ngModel)]="sentTo">
+                        <label class="form-check-label" for="family">Patient <span
+                        class="required" *ngIf="!patientData.contactNumber"></span></label>
+                    </div>
+                    <div class="form-check form-check-inline" (click)="getMessageTempListByType('family',patientData.familyMemberContactNumber,'') ">
+                      <input type="radio" class="form-check-input" id="familyMember" name="sentTo" value="familyMember"
+                          [ngStyle]="{opacity:patientData.familyMemberContactNumber?1:0.7}"
+                          [disabled]="!patientData.familyMemberContactNumber" [(ngModel)]="sentTo">
+                        <label for="familyMember" class="form-check-label"
+                          [ngStyle]="{opacity:patientData.familyMemberContactNumber?1:0.7}">Family Member <span
+                              class="required" *ngIf="!patientData.familyMemberContactNumber"></span></label>
+                  </div>
+                  <div class="form-check form-check-inline" (click)="getMessageTempListByType('both',patientData.contactNumber,patientData.familyMemberContactNumber) ">
+                    <input type="radio" class="form-check-input" id="Both" name="sentTo" value="patient|familyMember"
+                        [ngStyle]="{opacity:patientData.familyMemberContactNumber && patientData.contactNumber?1:0.7}"
+                        [disabled]="!patientData.familyMemberContactNumber || !patientData.contactNumber" [(ngModel)]="sentTo">
+                      <label for="Both" class="form-check-label"
+                        [ngStyle]="{opacity:patientData.familyMemberContactNumber && patientData.contactNumber?1:0.7}">Both<span
+                            class="required" *ngIf="!patientData.familyMemberContactNumber || !patientData.contactNumber"></span></label>
+                </div>
+                    </ng-container>
+                  </div>
+                  <div class="sent-to-box">
+  
+                    <label for="sent-to-box" class="form-label" >Message</label>
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <!-- <ng-container *ngIf="dashboardType.toLowerCase() != 'or'"> -->
+                      
+                      <ng-container *ngFor="let template of messageTempList; let i = index">
+                         <div class="accordion-item"  *ngIf=" template.displayName.toLowerCase() != 'others' ">
+                          <h2 class="accordion-header" >
+                            <button class="accordion-button " id="flush-collapseOne" type="button" (click)="showHide(template)" [value]="template.displayName">
+                              {{template.displayName}}
+                            </button>
+                          </h2>
+                          <div  [ngClass]="
+                          messageType === template.displayName && collapse==='true' ? 'accordion-collapse collapse show ':'accordion-collapse collapse'" >
+                          <div  *ngIf=" template.displayName.toLowerCase() != 'others' ">
+                             <div class="accordion-body">{{template.messageText}}
+                          </div>
+                           
+                        </div>
+                          </div>
+                        </div> 
+                        <div  *ngIf=" template.displayName.toLowerCase() == 'others' ">
+                          <div class="label-message">
+                            <label for="sent-to-box" class="form-label label-2">Custom</label>
+                            <label for="sent-to-box" class="form-label label-2" style="cursor: pointer;" *ngIf="customMessageValue !=''" (click)="clearCustomMessage()" >Clear</label></div>
+        
+                          <div class="input-group">
+                            <textarea class="form-control themeInput"   id="myCustomMessageInput"
+                            maxlength="1600" required (keyup)="onMessageInput($event)"></textarea>
+                          </div>
+        
+                        </div>
+
+                    </ng-container>
+                    <!-- </ng-container> -->
+                    <!-- <ng-container *ngIf="dashboardType.toLowerCase() == 'or'">
+                        <div class="label-message">
+                          <label for="sent-to-box" class="form-label label-2">Message</label>
+                          <label for="sent-to-box" class="form-label label-2" style="cursor: pointer;" *ngIf="customMessageValue !=''" (click)="clearCustomMessage()" >Clear</label></div>
+      
+                      <div class="radioStatusBox">
+                          <textarea class="form-control themeInput" style="height: 150px;" [(ngModel)]="message"
+                              maxlength="1600" id="myCustomMessageInput" required (keyup)="onMessageInput($event)"></textarea>
+                      </div>
+                      <div class="display-error">
+                          <span *ngIf="isMesageTextInvalid">Required</span>
+                      </div>
+                  </ng-container> -->
+  
+                  </div>
+  
+                 
+                </div>
+              </div>
+               
+                <div *ngIf="toggleMessage!='message'" class="tab-pane fade active show" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                  <div class="fortegra-user-table">
+  
+                    <div class="table-responsive" style="    overflow: initial;">
+  
+  
+                      <table class="table table-bordered" style="font-family:raleway-medium;">
+  
+                        <thead>
+                          <tr style="font-family: 'raleway-medium';">
+                            <th class="appoint-text">Sent On</th>
+                            <th class="appoint-text">Sent To</th>
+                            <th class="appoint-text">Message</th>
+                            <th class="appoint-text">Status</th>
+                             <th class="appoint-text">Action</th>
+  
+                          </tr>
+  
+                        </thead>
+                        <tbody>
+                        
+                          <tr class="t-body" *ngFor="let message of patientMessageList" style="opacity: 1;">
+                        
+                            <td  style="font-family:raleway-medium;width: 9%; opacity: 1;"> {{message.createdDate | date:'h:mm a'}}</td>
+                            <td style="width: 19%;opacity: 1;">
+                              <div class="corp-branch" style="font-family:raleway-medium;opacity: 1;" >{{message.sendTo}}</div>
+                              
+                            </td>
+                            <td style="width: 45%;" style="font-family:raleway-medium;opacity: 1;">
+                              <div style="word-wrap: break-word;" >{{message.text }}
+                                <!-- <div class="tooltiptext" *ngIf="message.text.length>30">
+                                  {{message.text}}
+                                </div> -->
+                              </div>
+  
+                            </td>
+                            <td style="opacity: 1;">
+                              <div>
+                                <div class="user-status-info" style="font-family:raleway-medium;">
+                                  <div  [ngClass]="{'user-active-sent':message.status === 'Delivered', 'user-active-pending': message.status === 'Pending','user-active-failed': message.status === 'Failed'}" style="opacity: 1;">
+                                    <span>{{message.status}}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td style="opacity: 1;">
+                              <div class="list-action">
+                               <a *ngIf="message.status=='Failed'" (click)="sendNotification('retry',message)" style="font-family: raleway-medium;cursor:pointer;"> <span  class="resend-icon"> <img src="assets/images/resend.png" alt=""></span></a>
+                               <!-- <a (click)="DeleteMessage(message.messageID)">  <span> <img src="assets/images/delete-icon.png" alt=""></span></a>  -->
+                              </div>
+                              </td>
+  
+                          </tr>
+                        </tbody>
+  
+  
+                      </table>
+                      <!-- <div *ngIf="patientMessageList.length==0" >
+                        <div style="
+                        margin: auto;
+                        padding: 20px 20mm 20px 20px;
+                        margin-left: 321px;
+                        font-weight: 600;font-family: 'Raleway-Medium'">No message found</div>
+                      </div> -->
+                      <!-- It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow. -->
+  
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body" *ngIf="toggleMessage=='message'">
+                  <hr class="divider-2">
+                  <div class="card-row-3 cta" style="justify-content: end;">
+  
+                    <!-- <div class="add-user-btn"><a href="index.html" class="blue-bg"><span><img
+                                  src="assets/images/Back-icon.png" alt=""></span>
+                              Send</a>
+                          </div>
+                          <div class="add-user-btn"><a href="index.html" class="blue-bg"><span><img
+                                  src="assets/images/Back-icon.png" alt=""></span>
+                              Send</a>
+                          </div> -->
+                    <button type="button" style="color: black;" class="btn btn-primary blue-bg" [disabled]="message==''"
+                    (click)="sendNotification('New','')">Send</button>
+                    <!-- <button type="button" class="btn btn-secondary grey-bg" style="margin-left: 6px;" (click)="resetMessage()">Cancel</button> -->
+                    <!-- <button type="submit" class="btn btn-primary blue-bg" [disabled]="addPatientForm.invalid">Save</button> -->
+                    <button type="button" style="margin-left: 6px;" class="btn btn-secondary grey-bg" (click)="resetMessage()">Cancel</button>
+                 
+                  </div>
+  
+                </div>
+  
+              </div>
+  
+  
+            </div>
+          </div>
+        </div>
+  
+      </div>
+</div>
+<!-- Add message model end -->
+
+<!-- Add Patient Model Start -->
+<div  *ngIf="addPatient" style="font-family: 'Raleway-Medium'">
+    <app-add-patient [patient]="patientToView" (AddPatientFlag)="getPatientFlag($event)">
+    </app-add-patient>
+</div>
+
+<div  *ngIf="addFamily" style="font-family: 'Raleway-Medium'">
+    <app-add-family [patient]="patientToView" (AddPatientFlag)="getFamilyFlag($event)">
+    </app-add-family>
+</div>
+
+<!-- Add Patient Modal End -->

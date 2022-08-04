@@ -1,0 +1,46 @@
+.form-group {
+    float: none;
+}
+.addpatient-heading {
+    padding: 10px 16px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+.btn-primary:focus,.btn-primary:hover ,.btn-primary:active{
+    border:1px solid #80bdff;
+    color: black;
+    box-shadow: 0 0 0 0 rgb(0 123 255 / 25%);
+    border-radius: 0.25rem;
+  }
+select.form-control {
+    position: relative;
+    background: url(../../../../assets/images/down.png) no-repeat 97% 50%;
+}
+.btn-secondary:focus {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+    box-shadow: 0 0 0 0 rgb(130 138 145 / 50%);
+}
+hr.divider {
+    border-bottom: 1px solid rgb(132, 133, 133);
+    margin: 0px -17px 8px -17px;
+    width: 100%;
+    padding-inline: 18px 5px;
+    padding-right: 0;
+  }
+    
+    .cta-addpatient {
+        float: right;
+        width: 23%;
+    }
+
+    .btn {
+        padding: 8px 40px;
+    }
+    .btn-primary {
+        color:#284239;
+        /* background-color:#54bb99; */
+        border-color:#b7e9d8;
+    }
+    

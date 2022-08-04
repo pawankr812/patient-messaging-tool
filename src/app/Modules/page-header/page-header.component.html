@@ -1,0 +1,79 @@
+<script>
+    $(document).mouseup(function (e) {
+        var container = $("#hideMe");
+        debugger
+        // If the target of the click isn't the container
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.hide();
+        }
+    });
+</script>
+<div class="upperSectionFixed" style="font-family: 'Raleway-Medium';">
+    <div class="header-left">
+        <img alt="Penn Logo" src="assets/images/admin-logo.png" style="width:140px">
+    </div>
+
+    <div class="headermenubar" (click)="OpenMobileSidebar()">
+        <img src="assets/images/menubar.png">
+    </div>
+
+    <div class="header-right" >
+        <span class="user-name">{{dashboardType}} &nbsp;</span>
+        <!-- <span class="user-icon"><img src="assets/images/deniel.jpg"></span>
+            <span class="box">&nbsp;</span> -->
+            <div style="position: relative;">
+        <span class="toggleIcon" data-bs-toggle="dropdown" (click)="OpenToggleBar(1,$event)"><img
+                src="assets/images/dropdown-icon.png" class="img-responsive" alt=""></span>
+                <div class="dropdown-menu show" id="hideMe" *ngIf="ToggleBar"
+                style="position: absolute; min-width: 7rem; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(-64px, 46px, 10px);"data-popper-placement="bottom-end">
+                <!-- <a class="dropdown-item" href="#"><span><img src="assets/images/eye.png" alt=""></span>View Profile</a> -->
+                <a class="dropdown-item" href="#" style="    width: 110px;
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-left: 10px;"><span><img src="assets/images/logout.jpg" alt=""></span>Log Out</a>
+            
+            </div>
+            </div>
+        </div>
+</div>
+
+
+<!-- <div class="mobSidebar" *ngIf="mobSidebar">
+    <div class="sidebarCloseIcon" (click)="CloseMobSidebar()">
+        <img src="assets/images/closeIconModal.png">
+    </div>
+    <div class="mobsidebarSection">
+        <div class="header">
+            <p>Patient Messaging Application</p>
+        </div>
+        <div class="sbcontent headerUserSection">
+            <div class="userNameClinic">
+                <p><img src="assets/images/HeaderIcons/headerUsernameIcon.png"><span>{{userName}}</span></p>
+                <p>{{facilityName}}</p>
+
+
+                <div class="locationDiv">
+                    <img title="Search Location" style="margin-top: 7px; width: 20px; height: 20px;" src="assets/images/location.png">
+                    <input [(ngModel)]="facilityCode" typeaheadOptionField="facility" 
+                    [typeahead]="suggestions$"
+                    [typeaheadAsync]="true" 
+                    (keypress)="noSpeacialCharacters($event)"
+                    (typeaheadOnSelect)="typeaheadOnSelect($event)" 
+                    [typeaheadScrollable]="true"
+                    [typeaheadOptionsInScrollableView]="5" 
+                    class="form-control themeInput"
+                    placeholder="Search Location"
+                    maxlength="50"
+                    >
+                </div>
+
+                <button class="themeButton" (click)="logout()" style="margin-top: 10px;">LOGOUT</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="customModaloverlay" *ngIf="AddPatient">
+    <app-add-patient (AddPatientFlag)="getAddPatientFlag($event)">
+    </app-add-patient>
+</div> -->

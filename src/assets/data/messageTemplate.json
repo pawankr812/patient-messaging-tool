@@ -1,0 +1,7 @@
+[
+    {"msgId":"1","msgLable":"The Exam Room is Ready","msgDec":"The Doctor will see you now. Please proceed to Exam Room 6..."},
+    {"msgId":"2","msgLable":"The Doctor is Running Late","msgDec":"Thanks for your Patience. The Doctor is running a little late today & will be with you shortly"},
+    {"msgId":"3","msgLable":"Covid-19 Guidelines","msgDec":"Please follow proper Social Distancing at all times. Wearing a mask is required when inside the facility"},
+    {"msgId":"4","msgLable":"Running Late","msgDec":"Thanks for your Patience. The Doctor is running a little late today & will be with you shortly"}
+   
+]

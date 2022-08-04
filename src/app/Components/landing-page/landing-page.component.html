@@ -1,0 +1,28 @@
+<div *ngIf="loaderService && loaderService.showLoader" id="showloading" [class.show]="loaderService.showLoader">
+</div>
+<app-header></app-header>
+<!-- <div class="emptyGridForLoginAgain">
+  <p class="mainHead">Welcome{{displayUserName ? ', ' +displayUserName : ""}}</p>
+  <p>Please enter the location code to log into the messaging system</p>
+  <form class="col-sm-12 padl-0" [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+    <div class="form-group col-6 padl-0">
+      <input formControlName="facilityCode" typeaheadOptionField="facility" 
+        [typeahead]="suggestions$"
+        [typeaheadAsync]="true" 
+        (keypress)="noSpeacialCharacters($event)"
+        (typeaheadOnSelect)="typeaheadOnSelect($event)" 
+        [typeaheadScrollable]="true"
+        [typeaheadOptionsInScrollableView]="5" 
+        class="form-control themeInput" required>
+      <div class="display-error">
+        <span
+          *ngIf="f.facilityCode.invalid && (f.facilityCode.dirty || f.facilityCode.touched) && f.facilityCode.errors.required">Required</span>
+        <span *ngIf="f.facilityCode.valid && facilityCodeError">Facility Code Not Found</span>
+      </div>
+    </div>
+    <div class="form-group col-2 padr-0">
+      <button type="submit" class="btn themeButton" [disabled]="loginForm.invalid">SUBMIT</button>
+    </div>
+  </form>
+</div> -->
+<app-footer></app-footer>

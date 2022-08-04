@@ -1,0 +1,83 @@
+<div *ngIf="loaderService && loaderService.showLoader" id="showloading" [class.show]="loaderService.showLoader">
+</div>
+
+<div class="addPatientMobile">
+    <div class="addPatientMobileHeader">
+        <h2>{{!isUpdate?'Add Patient':'Update Patient'}}</h2>
+    </div>
+    <form [formGroup]="addPatientForm" (ngSubmit)="save(addPatientForm.value)">
+        <input type="hidden" formControlName="patientID">
+        <div class="form-group col-8 padl-0">
+            <label class="themeLabel">Last Name<span class="required">*</span></label>
+            <input type="text" formControlName="lastName" class="form-control themeInput" required maxlength="50">
+            <div class="display-error">
+                <span
+                    *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched) && f.lastName.errors.required">Required</span>
+            </div>
+            <input type="hidden" formControlName="facilityID" class="form-control themeInput">
+        </div>
+        <div class="form-group col-4 padr-0">
+            <label class="themeLabel">Suffix</label>
+            <input type="text" formControlName="suffix" class="form-control themeInput" maxlength="15">
+        </div>
+        <div class="form-group col-8 padl-0">
+            <label class="themeLabel">First Name <span class="required">*</span></label>
+            <input type="text" formControlName="firstName" class="form-control themeInput" required maxlength="50">
+            <div class="display-error">
+                <span
+                    *ngIf="f.firstName.invalid && (f.firstName.dirty || f.firstName.touched) && f.firstName.errors.required">Required</span>
+            </div>
+        </div>
+        <div class="form-group col-4 padr-0">
+            <label class="themeLabel">Middle Name</label>
+            <input type="text" formControlName="middleName" class="form-control themeInput" maxlength="50">
+        </div>
+        <div class="form-group col-6 padl-0">
+            <label class="themeLabel">Cell Number <span class="required">*</span></label>
+            <input type="text" mask="000-000-0000" formControlName="phoneNumber" class="form-control themeInput"
+                required>
+            <div class="display-error">
+                <span
+                    *ngIf="f.phoneNumber.invalid && (f.phoneNumber.dirty || f.phoneNumber.touched) && f.phoneNumber.errors.required">Required</span>
+            </div>
+        </div>
+        <div class="form-group col-6 padr-0">
+            <label class="themeLabel">Provider's Name <span class="required">*</span></label>
+            <input type="text" formControlName="providerName" class="form-control themeInput" maxlength="50">
+            <div class="display-error">
+                <span
+                    *ngIf="f.providerName.invalid && (f.providerName.dirty || f.providerName.touched) && f.providerName.errors.required">Required</span>
+            </div>
+        </div>
+        <div class="form-group col-9 padl-0">
+            <label class="themeLabel">Appointment Date<span class="required">*</span></label>
+            <select formControlName="appointmentDate" class="form-control themeInput" aria-placeholder="abc">
+                <option *ngFor="let date of appointmentDates async" [ngValue]="date">{{date}}</option>
+            </select>                     
+            <div class="display-error">
+                <span
+                    *ngIf="f.appointmentDate.invalid && (f.appointmentDate.dirty || f.appointmentDate.touched) && f.appointmentDate.errors.required">Required</span>
+            </div>
+        </div>
+        <div class="form-group col-9 padl-0">
+            <label class="themeLabel">Appointment Time <span class="required">*</span></label>
+            <ngb-timepicker [meridian]="true" formControlName="appointmentTime" [hourStep]="1" [minuteStep]="5"
+                required></ngb-timepicker>
+            <div class="display-error">
+                <span
+                    *ngIf="f.appointmentTime.invalid && (f.appointmentTime.dirty || f.appointmentTime.touched) && f.appointmentTime.errors.required">Required</span>
+            </div>
+        </div>
+        <div class="form-group col-9 padl-0">
+            <label class="themeLabel">Check-In Time</label>
+            <ngb-timepicker [meridian]="true" formControlName="checkInTime" [hourStep]="1" [minuteStep]="5">
+            </ngb-timepicker>
+            <div class="display-error"></div>
+        </div>
+        <div class="form-group col-12 pdl-0 padr-0 text-center">
+            <button type="button" class="btn cancelButton" routerLink="/dashboard">Cancel</button>
+            <button type="submit" class="btn themeButton" [disabled]="addPatientForm.invalid">Save</button>
+
+        </div>
+    </form>
+</div>

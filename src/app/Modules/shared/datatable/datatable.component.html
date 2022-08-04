@@ -1,0 +1,143 @@
+
+<table>
+   
+    <thead *ngIf="dataSource && dataSource.displayInfo && dataSource.displayInfo.length > 0" style="
+        padding-left: 0;
+        background-color: #e6fbf4;
+        height: 35px;
+        font-weight: bold;">
+        <tr>
+            <ng-container *ngFor="let column of dataSource.displayInfo">
+                <th *ngIf="column.sorting && (column.columnName=='provider' || column.columnName=='patientName' )&& (column.columnName!='checkInTime' ) " style="width: 20%;" (click)="sortBy(column.columnName)">
+                    {{column.columnDisplayName | titlecase}}
+                    <img class="arrowImg" src="assets/images/arrows.png" />
+                </th>
+                <th *ngIf="column.sorting && column.columnName!='provider' && column.columnName!='patientName'&& (column.columnName!='checkInTime' )  " (click)="sortBy(column.columnName)">
+                     {{column.columnDisplayName | titlecase}}
+                    <img class="arrowImg" src="assets/images/arrows.png" />
+                </th>
+                <th *ngIf="column.sorting && column.columnName!='provider' && column.columnName!='patientName' && (column.columnName=='checkInTime' ) " style="width: 9.9%;" (click)="sortBy(column.columnName)">
+                    {{column.columnDisplayName | titlecase}}
+                    <img class="arrowImg" src="assets/images/arrows.png" />
+                </th>
+                <th *ngIf="!column.sorting" >
+                    {{column.columnDisplayName | titlecase}}
+                </th>
+            </ng-container>
+        </tr>
+    </thead>
+    <tbody
+        *ngIf="dataSource && dataSource.data && dataSource.data.length > 0 && dataSource.displayInfo && dataSource.displayInfo.length > 0">
+        <ng-container *ngFor="let data of pageOfItems;let i = index;">
+            <!-- <tr [ngStyle]="{'color':data['familyMemberContactNumber'] && data['facilityCode'] !='AMB' ?'' :'red'}"> -->
+                <tr >
+                <ng-container *ngFor="let column of dataSource.displayInfo;" style="margin-left: 2px;">
+
+                    <td *ngIf="column.columnType == 'data'" data-column="ENTRY DATE" style="padding-right: 14px;">
+                        <span [ngStyle]=changeTextColor(data) *ngIf="column.clickAction" class="aptTime"
+                            (click)="clickAction(data, column.clickAction)">{{data[column.columnName] | titlecase}}</span>
+                        <span *ngIf="!column.clickAction">{{data[column.columnName] | titlecase}}</span>
+                    </td>
+                    <td *ngIf="column.columnType == 'date'" data-column="ENTRY DATE">
+                        <span *ngIf="column.clickAction" class="aptTime"
+                            (click)="clickAction(data, column.clickAction)">{{data[column.columnName]
+                            | date}}</span>
+                        <span *ngIf="!column.clickAction">{{data[column.columnName]
+                            | date}}</span>
+                    </td>
+                    <td *ngIf="column.columnType == 'phone'" data-column="ENTRY DATE">
+                        <span *ngIf="column.clickAction" class="aptTime"
+                            (click)="clickAction(data, column.clickAction)">{{data[column.columnName]
+                            | PhoneUSA}}</span>
+                        <span *ngIf="!column.clickAction">{{data[column.columnName]
+                            | PhoneUSA}}</span>
+                    </td>
+                    <td *ngIf="column.columnType == 'time'" data-column="ENTRY DATE">
+                        <span *ngIf="column.clickAction" class="aptTime"
+                            (click)="clickAction(data, column.clickAction)">{{data[column.columnName]}}</span>
+                        <span *ngIf="!column.clickAction">{{data[column.columnName]
+                            | date:'h:mm a'}}</span>
+                    </td>
+                    <td *ngIf="column.columnType == 'action'" class="message" data-column="MESSAGE" style="
+                    display: flex;
+                    width: 120px;
+                    justify-content: space-around;
+                ">
+                        <span (click)="OpenMessageBox(data)">
+                            <img title="New Message" *ngIf="data.messageStatus.toLowerCase() !='failed'" src="assets/images/card-menu.png" style="    width: 20px;
+                            height: 18px;
+                            margin-left: -33px;">
+                             <img title="New Message" *ngIf="data.messageStatus.toLowerCase() =='failed'" src="assets/images/card-menu-red.png" style="    width: 20px;
+                             height: 18px;
+                             margin-left: -33px;">
+                        </span>
+                        <!-- <span>
+                            <img title="View More" *ngIf="!subMenuTable[i]" (click)="viewMore(data,i)"
+                                src="assets/images/menuDown.png">
+                            <img title="View Less" *ngIf="subMenuTable[i]" (click)="hideSubMenu(i)"
+                                src="assets/images/menuUp.png">&nbsp;
+                        </span>
+                        <span (click)="deletePatient(data)">
+                            <img title="Delete Patient" src="assets/images/delete.png">
+                        </span> -->
+                    </td>
+
+                </ng-container>
+
+            </tr>
+            <tr class="dynamicRow" *ngIf="subMenuTable[i]">
+                <td colspan="6" class="singleTd">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>SENT ON</th>
+                                <th>SENT TO</th>
+                                <!-- <th>SENT BY</th> -->
+                                <th style="width:40%">MESSAGE</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let message of patientMessageList">
+                                <td data-column="SENT ON">{{message.createdDate | date}} {{message.createdDate |
+                                    customtime}}</td>
+                                <td data-column="SENT TO">{{message.sendTo}}</td>
+                                <!-- <td data-column="SENT BY"></td> -->
+                                <td data-column="MESSAGE">
+                                    <div class="tooltip">{{message.text |
+                                        slice:0:50}}{{message.text.length>50?'...':''}}
+                                        <span *ngIf="message.text.length>50" class="tooltiptext">{{message.text}}</span>
+                                    </div>
+                                </td>
+                                <td data-column="STATUS">{{message.status}}</td>
+                                <td data-column="ACTION">
+                                    <span>
+                                        <img style="cursor: pointer;"
+                                            *ngIf="message.status && message.status.toLowerCase() == 'failed'"
+                                            src="assets/images/refresh.png" (click)="retryMessage(message,data)">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr *ngIf="!patientMessageList.length">
+                                <td colspan="6" class="noMsgFound">
+                                    <p>No message found.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
+<!-- <div class="table-pagignation">
+      <div class="add-user-btn"><a href="#" class="blue-bg"><span></span>
+    Load More</a></div>
+    <div class="table-pagignation-right">
+      <span class="pagination-or">or &nbsp;&nbsp;</span> 
+      <jw-pagination [items]="dataSource.data" [pageSize]="pageSize" (changePage)="onChangePage($event)"></jw-pagination></div>
+  </div> -->
+<div [ngClass]="!hidePagination  ? 'hidepagination':'paginationSection '"  *ngIf="dataSource && dataSource.data && dataSource.data.length > 0">
+    <jw-pagination [items]="dataSource.data" [pageSize]="pageSize" [initialPage]="currPage"  (changePage)="onChangePage($event)"></jw-pagination>
+</div>

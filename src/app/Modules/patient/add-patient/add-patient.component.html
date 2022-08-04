@@ -1,0 +1,176 @@
+
+<div *ngIf="loaderService && loaderService.showLoader" id="showloading" [class.show]="loaderService.showLoader">
+</div>
+ 
+
+ <div class="row row-cols-1 row-cols-md-1 g-4 fortegra-inner-area ">
+
+    <div class="col add-patient-contianer">
+        <div class="card">
+            <div>
+
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <label class="addpatient-heading" for="">{{!isUpdate?'Add Patient':'Update Patient'}}</label>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="sent-to-box " style="border-bottom: solid 1px #ced4da;">
+                            <form [formGroup]="addPatientForm" (ngSubmit)="save(addPatientForm.value)">
+                                <div>
+                                    <label class="addpatient-heading" for="">Patient Details</label>
+                                <div class="form-group-1">
+                                    <div class="form-input">
+                                        <label class="themeLabel">Last Name <span class="required">*</span></label>
+                                         <input type="text" formControlName="lastName" class="form-control themeInput" required maxlength="50" placeholder="Add Last Name">
+                                        <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+                                         <div class="display-error">
+                                            <span *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched) && f.lastName.errors.required">Required</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-input">
+                                          <label class="themeLabel">First Name <span class="required">*</span></label>
+                                        <input type="text" formControlName="firstName" class="form-control themeInput" required    maxlength="50" placeholder="Add First Name">
+                                        <div class="display-error">
+                                            <span
+                                                *ngIf="f.firstName.invalid && (f.firstName.dirty || f.firstName.touched) && f.firstName.errors.required">Required</span>
+                                        </div>
+                                        <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="themeLabel">Middle Name</label>
+                                        <input type="text" formControlName="middleName" class="form-control themeInput" maxlength="50" placeholder="Add Middle Name">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="themeLabel">Cell Number <span class="required">*</span></label>
+                                        <input  type="text" mask="000-000-0000" formControlName="contactNumber" id="contactNumber"
+                                            class="form-control themeInput" required placeholder="Add Cell Number ">
+                                            <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+                                        <div class="display-error">
+                                            <span
+                                                *ngIf="f.contactNumber.invalid && (f.contactNumber.dirty || f.contactNumber.touched || patient.updateFromMessageBox) && f.contactNumber.errors.required  ">Required</span>
+                                               
+                                      
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group-1">
+                                    <div class="form-input">
+                                          <label class="themeLabel">Sex </label>
+                                          <select formControlName="sex" class="form-control themeInput" aria-placeholder="select"  placeholder="Select  Sex" style="
+                                          height: auto;
+                                          border-radius: 0.25rem;
+                                          border: solid 1px #ced4da;
+                                      ">
+                                          <option *ngFor="let sex of sexList " [ngValue]="sex">{{sex}}</option>
+                                      </select>
+                                        <!-- <input type="text" formControlName="sex" class="form-control themeInput"     maxlength="6" placeholder="Add Sex"> -->
+                                        <div class="display-error">
+                                        </div>
+                                        <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="themeLabel">Date of Birth</label>
+                                        <!-- <p-calendar inputId="basic" class="form-control themeInput" formControlName="date" placeholder="MM/DD/YYYY" ></p-calendar> -->
+                                        <!-- <input type="text"  [minDate]="{year: 1900, month: 1, day: 1}"   [maxDate]="{year: 2050, month: 12, day: 31}"  placeholder="mm/dd/yyyy" (dateSelect)="onDateSelected($event)" id="dob"   name="d" formControlName="dob" class="form-control themeInput"   (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"> -->
+                                        <input type="date" formControlName="date" max="2300-12-31" min="1800-12-31" class="form-control themeInput" maxlength="50" placeholder="MM/DD/YYYY">
+                                        <!-- <small id="emailHelp" class="form-text text-muted"></small> -->
+                                    </div>
+                                  
+                                </div>
+                                <div *ngIf="dashboardType.toLowerCase()=='ed'" class="form-group-1">
+                                    <div class="form-input">
+                                        <label class="themeLabel">Family Member Last Name </label>
+                                    <input type="text" formControlName="familylastName" class="form-control themeInput" maxlength="50" placeholder="Add Family Member Last Name">
+                                    <input type="hidden" formControlName="facilityID" class="form-control themeInput">
+                                    <small id="emailHelp" class="form-text text-muted"></small>
+                                    <div class="display-error">
+                                        <!-- <span
+                                            >Required</span> -->
+                                    </div>
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="themeLabel">Family Member First Name </label>
+                                       <input type="text" formControlName="familyfirstName" class="form-control themeInput"  maxlength="50" placeholder="Add Family Member First Name">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="themeLabel">Family Member's Cell  </label>
+                                       <input  type="text" mask="000-000-0000" formControlName="familyContactNumber"    class="form-control themeInput" placeholder="Add Family Member's Cell " >
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                              
+                                <label class="addpatient-heading" for="">Appointment Details</label>
+                                <div class="form-group-1">
+                                    <div class="form-input">
+                                        <label style="margin-bottom: 22px;" class="themeLabel" *ngIf="dashboardType=='ED' ">Entry Date<span class="required">*</span></label>
+                                        <label style="margin-bottom: 22px;" class="themeLabel" *ngIf="dashboardType!='ED' ">Appointment Date<span class="required">*</span></label>
+                                        <!-- <input type="date" class="form-control datepicker"  formControlName="appointmentDate"  placeholder="Select Appointment Date"> -->
+                                        <select formControlName="appointmentDate" class="form-control themeInput" aria-placeholder="select"  placeholder="Select Appointment Date" style="
+                                        height: auto;
+                                        border-radius: 0.25rem;
+                                        border: solid 1px #ced4da;
+                                    ">
+                                     <!-- <option   disabled selected>Select Sex</option> -->
+                                        <option *ngFor="let date of appointmentDates async" [ngValue]="date">{{date}}</option>
+                                    </select>
+                                        <!-- <small id="emailHelp" class="form-text text-muted"><a href="assets/images/calender-icon.png"></a>  </small> -->
+                                        <div class="display-error">
+                                            <span
+                                                *ngIf="f.appointmentDate.invalid && (f.appointmentDate.dirty || f.appointmentDate.touched) && f.appointmentDate.errors.required">Required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="themeLabel">Appointment Time<span class="required">*</span></label>
+
+                                        <!-- <input type="time" name="appointmenttime" class="form-control" formControlName="appointmentTime" id="exampleInputEmail1"  placeholder="Select Appointment Time"> -->
+                                        <ngb-timepicker [meridian]="true" formControlName="appointmentTime"  [hourStep]="1" [minuteStep]="5" required></ngb-timepicker>
+                                     <small id="emailHelp" class="form-text text-muted"></small>
+                                       <div class="display-error">
+                                        <span
+                                            *ngIf="f.appointmentTime.invalid && (f.appointmentTime.dirty || f.appointmentTime.touched) && f.appointmentTime.errors.required">Required</span>
+                                    </div>
+                                    </div>
+                                     <div class="form-input">
+                                        <label class="themeLabel" *ngIf="dashboardType=='ED' ">Entry Time</label>
+                                        <label class="themeLabel" *ngIf="dashboardType!='ED' ">Check-in Time</label>
+                                        <ngb-timepicker [meridian]="true" formControlName="checkInTime" [hourStep]="1" [minuteStep]="5" ></ngb-timepicker>
+                                        <!-- <input type="time" class="form-control" formControlName="checkInTime" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="11:23 AM"> -->
+                                   
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                       <div class="form-input">
+                                        <label class="themeLabel" style="margin-bottom: 22px;">Practitioner<span class="required">*</span></label>
+                                     <input  type="text" formControlName="provider" placeholder="Add Practitioner's Name"
+                                         class="form-control themeInput" maxlength="50">
+                                         <small id="emailHelp" class="form-text text-muted"></small>
+                                     <div class="display-error">
+                                         <span
+                                             *ngIf="f.provider.invalid && (f.provider.dirty || f.provider.touched) && f.provider.errors.required">Required</span>
+                                     </div>
+                                     </div>
+                                   
+                                 
+                                </div>
+                            </div>
+                                <div class="card-body">
+                                    <div class="card-row-3 cta-addpatient" style="justify-content: end;margin-top: 8px;">
+                                      <button type="submit" class="btn btn-primary blue-bg" [disabled]="addPatientForm.invalid">Save</button>
+                                      <button type="button" style="margin-left: 6px;" class="btn btn-secondary grey-bg" (click)="CloseModal('',{})">Cancel</button>
+                                    </div>
+                                  </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

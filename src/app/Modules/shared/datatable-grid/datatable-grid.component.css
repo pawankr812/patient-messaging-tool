@@ -1,0 +1,41 @@
+:host 
+  ::ng-deep  .ngx-pagination .current {
+    padding: 0.1875rem 0.625rem;
+    background: #fff;
+    color: #333333;
+    cursor: default;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 500;
+}
+.card-row-1-right, .card-row-1-left {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  min-width: 153.3px;
+}
+.card-row-5 {
+  display: flex;
+  justify-content: space-between;
+  /* margin-bottom: 10px; */
+  align-items: baseline;
+}
+.card-row-5-right, .card-row-5-left {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+ 
+}
+hr.divider {
+  border-bottom: 1px solid rgb(132, 133, 133);
+  /* margin: 0px -17px 8px -17px; */
+  width: 100%;
+  padding-inline: 33px 5px;
+  padding-right: 0;
+}
+.hidepagination{
+  opacity: 0;
+}
+.color{
+  color: red;
+}

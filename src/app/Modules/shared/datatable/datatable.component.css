@@ -1,0 +1,31 @@
+.hidepagination{
+    opacity: 0;
+  }
+  .arrowImg{
+    cursor: pointer;
+  }
+  .gridHeader table thead tr th {
+    font-weight: 500;
+    text-align: left;
+    font-size: 12px;
+    /* color: #a7a7a7; */
+    opacity: 0.7;
+    width: 11.9%;
+    padding-left: 9px;
+}
+.pageGrid table tbody tr td {
+  font-size: 12px;
+  padding: 14px 0px;
+  font-weight: 500;
+  word-break: break-all;
+  opacity: 1;
+  padding-left: 9px;
+}
+.gridHeader {
+  display: inline-block;
+  float: left;
+  width: 100%;
+  padding: 12px 10px 12px 12px;
+  /* border-bottom: 1px solid #e6e6e7; */
+  margin-top: 0px;
+}

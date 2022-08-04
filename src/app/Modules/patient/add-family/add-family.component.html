@@ -1,0 +1,86 @@
+
+<div *ngIf="loaderService && loaderService.showLoader" id="showloading" [class.show]="loaderService.showLoader">
+</div>
+
+ <div class="row row-cols-1 row-cols-md-1 g-4 fortegra-inner-area ">
+
+    <div class="col add-patient-contianer">
+        <div class="card">
+            <div>
+
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <label class="addpatient-heading" for="">Family Member</label>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="sent-to-box" style="border-bottom: solid 1px #ced4da;">
+                            <form [formGroup]="addPatientForm" (ngSubmit)="save(addPatientForm.value)">
+                                <div class="form-group-1">
+                                    <div class="form-input">
+                                        <label class="themeLabel">Family Member Last Name <span class="required">*</span></label>
+                                         <input type="text" formControlName="lastName" class="form-control themeInput" required maxlength="50" placeholder="Add Family Member Last Name">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                         <div class="display-error">
+                                            <span *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched) && f.lastName.errors.required">Required</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-input">
+                                          <label class="themeLabel">Family Member First Name <span class="required">*</span></label>
+                                        <input type="text" formControlName="firstName" class="form-control themeInput" required    maxlength="50" placeholder="Add Family Member First Name">
+                                        <div class="display-error">
+                                            <span
+                                                *ngIf="f.firstName.invalid && (f.firstName.dirty || f.firstName.touched) && f.firstName.errors.required">Required</span>
+                                        </div>
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+
+                                    </div>
+                                    <!-- <div class="form-input">
+                                        <label class="themeLabel">Middle Name</label>
+                                        <input type="text" formControlName="middleName" class="form-control themeInput" maxlength="50" placeholder="Add Family Member Middle Name">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div> -->
+                                    <div class="form-input">
+                                       
+                                        <label class="themeLabel">Family Member's Cell </label>
+                                        <input  type="text" mask="000-000-0000" formControlName="contactNumber" placeholder="Add Family Member's Cell"
+                                            class="form-control themeInput" >
+                                            <small id="emailHelp" class="form-text text-muted"></small>
+                                        <div class="display-error">
+                                            <span
+                                                *ngIf="f.contactNumber.invalid && (f.contactNumber.dirty || f.contactNumber.touched || patient.updateFromMessageBox) && f.contactNumber.errors.required">Required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group-1">
+                                    <div class="form-input">
+                                          <label class="themeLabel">Sex </label>
+                                        <input type="text" formControlName="sex" class="form-control themeInput"     maxlength="6" placeholder="Add Gender">
+                                        <div class="display-error">
+                                        </div>
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+
+                                    </div>
+                                    <div class="form-input">
+                                        <label class="themeLabel">Date of Birth</label>
+                                        <input type="date" formControlName="dob" class="form-control themeInput" maxlength="50" placeholder="Add Date of Birth">
+                                        <small id="emailHelp" class="form-text text-muted"></small>
+                                    </div>
+                                  
+                                </div> -->
+                                <div class="card-body">
+                                    <hr class="divider">
+                                    <div class="card-row-3 cta-addpatient" style="justify-content: end;margin-top: 8px;">
+                                      <button type="submit" class="btn btn-primary blue-bg" [disabled]="addPatientForm.invalid">Save</button>
+                                      <button type="button" class="btn btn-secondary grey-bg" style="margin-left: 6px;" (click)="CloseModal('',{})">Cancel</button>
+                                    </div>
+                                  </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

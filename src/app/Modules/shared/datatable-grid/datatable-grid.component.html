@@ -1,0 +1,170 @@
+
+<div class="row row-cols-1 row-cols-md-2 g-4 fortegra-inner-area" *ngIf="dataSource && dataSource.data && dataSource.data.length > 0">
+<ng-container *ngFor="let data of pageOfItems">
+<div class="col"   >
+    <div class="card">
+        <!-- <img style="width: 42px;
+        height: 42px;
+        border-radius: 86px;
+        margin-left: 10px;
+        margin-top: 9px;" src="data:image/jpeg;base64,{{data.imageBase64Code}}" alt=""> -->
+    <div class="card-body">
+        <div class="card-row-5" style="margin-bottom: 0;">
+            <div class="card-row-5-left">
+
+              <div class="form-group user-image">
+                <!-- <input type="checkbox" class="user-image-input" id="exampleCheck1">
+                <label class="user-image-label" for="exampleCheck1"></label> -->
+                <img *ngIf="data.imageBase64Code !=''" style="width: 37px;
+                height: 37px;
+                border-radius: 86px;"                src="data:image/jpeg;base64,{{data.imageBase64Code}}" alt="">
+            <img *ngIf="data.imageBase64Code==''" src="assets/images/patient-placeholder.png" alt=""> 
+            </div>
+            </div>
+            <div class="card-row-5-right">
+                <div (click)="OpenMessageBox(data)" style="cursor: pointer;">
+                    <!-- <img  src="assets/images/card-menu.png" class="card-img-message" alt="...">  -->
+                <img  *ngIf="data.messageStatus.toLowerCase() !='failed'" src="assets/images/card-menu.png" class="card-img-message" alt="...">
+                <img *ngIf="data.messageStatus.toLowerCase() =='failed'" src="assets/images/card-menu-red.png" class="card-img-message" alt="...">
+                </div>
+               
+            </div>
+
+          </div>
+          <div   (click)="clickAction(data)" style="cursor: pointer;">
+            <h5 style="height: 32px; " class="card-title" >{{data.lastName| titlecase |
+                slice:0:24}}, {{data.firstName| titlecase |
+                    slice:0:24}}{{data.firstName.length>24?'..':'' }}</h5>
+          </div>
+      
+        <div class="card-row-3">
+        <div class="card-row-1-left" >
+            <div>
+            <img src="assets/images/calender-icon.png" class="appoint-img" alt="...">
+            </div>
+            <!-- <h6 class="card-title">Doe, Jothn</h6> -->
+            <span *ngIf="data.facilityCode=='AMB'|| data.facilityCode.toLowerCase()=='amballscript' " class="appoint-text">Appointment Date:</span>
+            <span *ngIf="data.facilityCode=='ED'|| data.facilityCode=='OR' " class="appoint-text">Entry Date:</span>
+        </div>
+        <div class="card-row-1-right" >
+
+            <span style="font-size: 12px;
+            margin-right: 13px;font-size: 12px;
+    "> {{data.appointmentDate | date}} </span>
+        </div>
+
+        </div>
+         <div class="card-row-3" *ngIf="data.facilityCode !='OR' ">
+            <div class="card-row-1-left">
+                <div>
+                <img src="assets/images/check-in-icon.png" class="appoint-img" alt="...">
+                </div>
+                <span  class="appoint-text">Appointment Time:</span>
+            </div>
+            <div class="card-row-1-right">
+    
+                <div class="checkin-time">
+                <span >{{data.appointmentDate | date:'h:mm a'}}</span>
+                </div>
+            </div>
+    
+            </div> 
+        <div class="card-row-3">
+        <div class="card-row-1-left"  >
+            <div>
+            <img src="assets/images/check-in-icon.png" class="appoint-img" alt="...">
+            </div>
+            <!-- <h6 class="card-title">Doe, Jothn</h6> -->
+            <span *ngIf="data.facilityCode=='AMB' || data.facilityCode.toLowerCase()=='amballscript' " class="appoint-text">Check-in Time:</span>
+            <span *ngIf="data.facilityCode=='ED' || data.facilityCode=='OR' " class="appoint-text">Entry Time:</span>
+        </div>
+        <div class="card-row-1-right" >
+
+            <div class="checkin-time">
+            <span>{{data.checkInTime | date:'h:mm a'}}</span>
+            </div>
+        </div>
+
+        </div>
+        <div class="card-row-3">
+        <div class="card-row-1-left">
+            <div>
+            <img src="assets/images/contact-icon.png" class="appoint-img" alt="...">
+            </div>
+            <!-- <h6 class="card-title">Doe, Jothn</h6> -->
+            <span  class="appoint-text" [ngStyle]="changeTextColorPatient(data,'patient')">Cell Number:</span>
+        </div>
+        <div class="card-row-1-right " >
+            <div class="checkin-time" >
+            <span >{{data.contactNumber | PhoneUSA}} </span>
+        </div>
+        </div>
+
+        </div>
+        <div class="card-row-3" *ngIf="(data.facilityCode=='ED' || data.facilityCode.toLowerCase() =='or') ">
+            <div class="card-row-1-left" >
+                <div>
+                <img src="assets/images/contact-icon.png" class="appoint-img" alt="...">
+                </div>
+                <!-- <h6 class="card-title">Doe, Jothn</h6> -->
+                <span  class="appoint-text" [ngStyle]="changeTextColorFamily(data,'family')">Family Member's Cell :</span>
+            </div>
+            <div class="card-row-1-right ">
+                <div class="checkin-time" >
+                <span *ngIf=" data.familyMemberContactNumber  && data.familyMemberContactNumber !='0' ">{{data.familyMemberContactNumber|slice:0:3}}-{{data.familyMemberContactNumber| slice:3:6}}-{{data.familyMemberContactNumber| slice:6:10}} </span>
+            </div>
+            </div>
+    
+            </div>
+        <hr class="divider">
+        <div class="card-row-3">
+        <div  >
+            <span class="appoint-text">Practitioner:</span>
+            <div class="checkin-time">
+                <span>{{data.provider | titlecase}}</span>
+                </div>
+        </div>
+        <!-- <div  *ngIf="lengthOfPractioner(data)!='less'">
+            <span class="p-tag">Practitioner:</span>
+            <div class="p-name">{{data.provider}}</div>
+        </div> -->
+        <!-- <div class="card-row-1-right">
+            <div class="contact">
+            <img src="assets/images/profile-login.png">
+
+            </div>
+        </div> -->
+
+        </div>
+      <!--   <hr class="divider-2">
+        <div class=" card-link-container ">
+        <div class="card-link v1" style="cursor: pointer;" (click)="clickAction(data)">
+            <div style="    margin-left: 18px;">
+            <img src="assets/images/detail-icon.png" class="appoint-img" alt="...">
+            </div>
+            <span class="appoint-text"  >Detail</span>
+        </div>
+        <div style="border-right: 1px solid rgb(223 225 225); height: 58px;margin-left: 14px;margin-top: -6px;"></div>
+        <div class="card-link" style="cursor: pointer;" (click)="deletePatient(data)">
+            <div style="    margin-left: 18px;">
+            <img src="assets/images/delete-icon.png" class="appoint-img" alt="...">
+            </div>
+            <span class="appoint-text" >Delete</span>
+        </div>
+
+        </div> -->
+    </div>
+    </div>
+</div>
+</ng-container>
+
+</div>
+<!-- <div class="table-pagignation"> -->
+    <!-- <div class="add-user-btn"><a href="#" class="blue-bg"><span></span>
+  Load More</a></div> -->
+   <!-- <div class="table-pagignation-right">
+   <pagination-controls  (pageChange)="p = $event" nextLabel="Load More" maxSize="9" responsive="true" directionLinks="false"></pagination-controls>
+ </div>  -->
+<div [ngClass]="hidePagination  ? 'paginationSection ':'hidepagination'"  *ngIf="dataSource && dataSource.data && dataSource.data.length > 0" id="pagination">
+    <jw-pagination [items]="dataSource.data" [pageSize]="8" [initialPage]="currPage" (changePage)="onChangePage($event)"></jw-pagination>
+</div>
